@@ -55,6 +55,8 @@ public class BootstrapData implements CommandLineRunner {
         // create a customer
         Customer customer = new Customer();
         customer.setName("John Doe");
+        customer.setPhoneNumber("12345678");
+        customer.setAddress("Main 123");
 
         // save the customer to the database
         customerService.createCustomer(customer);
