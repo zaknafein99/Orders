@@ -4,6 +4,8 @@ import com.orders.orders.domain.Item;
 import com.orders.orders.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ItemService {
 
@@ -15,5 +17,9 @@ public class ItemService {
 
     public Item CreateItem(Item item){
         return itemRepository.save(item);
+    }
+
+    public List<Item> getAllItems(){
+        return itemRepository.findAll();
     }
 }

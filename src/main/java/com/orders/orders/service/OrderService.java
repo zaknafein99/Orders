@@ -6,6 +6,8 @@ import com.orders.orders.repository.OrderRepository;
 import com.orders.orders.repository.TruckRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderService {
 
@@ -18,17 +20,21 @@ public class OrderService {
     }
 
     public Order createOrder(Order order) {
-        // logic for assigning order to truck
-        Truck truck = findAvailableTruck(order.getPrice());
-        order.setTruck(truck);
+
         // save order
         return orderRepository.save(order);
+    }
+
+    public List<Order> getAllOrders(){
+        return orderRepository.findAll();
     }
 
     private Truck findAvailableTruck(Double price) {
         // logic for finding available truck
         return null;
     }
+
+
 
     // other methods for handling orders
 }

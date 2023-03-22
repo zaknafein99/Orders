@@ -19,8 +19,8 @@ public class Truck {
     @Column(name = "capacity")
     private Integer capacity;
 
-    @OneToMany(mappedBy = "truck", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> orders = new ArrayList<>();
+//    @OneToMany(mappedBy = "truck", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Order> orders = new ArrayList<>();
 
     // getters and setters
 
@@ -48,13 +48,13 @@ public class Truck {
         this.capacity = capacity;
     }
 
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
+//    public List<Order> getOrders() {
+//        return orders;
+//    }
+//
+//    public void setOrders(List<Order> orders) {
+//        this.orders = orders;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -77,7 +77,6 @@ public class Truck {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", capacity=" + capacity +
-                ", orders=" + orders +
                 '}';
     }
 }

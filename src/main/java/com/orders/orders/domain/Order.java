@@ -3,6 +3,7 @@ package com.orders.orders.domain;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,21 +13,21 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Date date;
+    @ManyToOne
+    private Customer customer;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "price")
-    private Double price;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "truck_id")
+    @ManyToOne
+    @JoinTable(name = "order_truck",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "truck_id"))
     private Truck truck;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(name = "order_item",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id"))
     private List<Item> items = new ArrayList<>();
-
-    // getters and setters
 
     public Long getId() {
         return id;
@@ -36,20 +37,20 @@ public class Order {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Date getDate() {
+        return date;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public Double getPrice() {
-        return price;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Truck getTruck() {
@@ -66,32 +67,6 @@ public class Order {
 
     public void setItems(List<Item> items) {
         this.items = items;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Order order = (Order) o;
-
-        return id.equals(order.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", truck=" + truck +
-                ", items=" + items +
-                '}';
     }
 }
 
