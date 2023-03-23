@@ -26,10 +26,17 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public Optional<Customer> getCustomerByPhone(String phone){
+    public List<Customer> getCustomerByPhone(String phone){
         return customerRepository.findByphoneNumber(phone);
     }
 
+    public List<Customer> saveAll(List<Customer> customers) {
+        return customerRepository.saveAll(customers);
+    }
+
+    public Optional<Customer> getCustomerById(Long id) {
+        return customerRepository.findById(id);
+    }
     // other methods for handling customers
 }
 
