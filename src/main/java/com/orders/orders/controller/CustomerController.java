@@ -6,12 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
+    private static final Logger log = Logger.getLogger(CustomerController.class.getName());
 
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
@@ -23,8 +26,15 @@ public class CustomerController {
     }
 
     @PostMapping("")
-    public Customer createCustomer(@RequestBody Customer customer) {
-        return customerService.createCustomer(customer);
+    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+        try {
+            Customer createdCustomer = customerService.createCustomer(customer);
+            log.info(String.format("Customer created with ID %s", createdCustomer.getId()));
+            return ResponseEntity.ok(createdCustomer);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed to create customer", e);
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/phone/{phone}")
@@ -33,13 +43,17 @@ public class CustomerController {
         if (customers == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(customers);
+        return ResponseEntity.ok(customerService.getCustomerByPhone(phone));
     }
 
     @PostMapping("/save-all")
     public ResponseEntity<List<Customer>> saveAll(@RequestBody List<Customer> customers) {
-        List<Customer> savedEntities = customerService.saveAll(customers);
-        return ResponseEntity.ok(savedEntities);
+        if (customers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            customerService.saveAll(customers);
+            return ResponseEntity.ok(customers);
+        }
     }
 
 }
