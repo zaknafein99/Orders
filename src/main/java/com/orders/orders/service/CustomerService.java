@@ -1,7 +1,9 @@
 package com.orders.orders.service;
 
 import com.orders.orders.domain.Customer;
+import com.orders.orders.domain.Order;
 import com.orders.orders.repository.CustomerRepository;
+import com.orders.orders.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +13,11 @@ import java.util.Optional;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final OrderRepository orderRepository;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, OrderRepository orderRepository) {
         this.customerRepository = customerRepository;
+        this.orderRepository = orderRepository;
     }
 
     public Customer createCustomer(Customer customer) {
@@ -36,6 +40,15 @@ public class CustomerService {
 
     public Optional<Customer> getCustomerById(Long id) {
         return customerRepository.findById(id);
+    }
+
+    public void deleteCustomer(Long customerId) {
+        // delete all orders associated with the customer
+        List<Order> orders = orderRepository.findByCustomerId(customerId);
+        orderRepository.deleteAll(orders);
+
+        // delete the customer
+        customerRepository.deleteById(customerId);
     }
     // other methods for handling customers
 }
