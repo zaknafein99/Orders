@@ -38,6 +38,7 @@ public class OrderService {
             items.add(itemFromDb);
         }
         order.setItems(items);
+        order.setTotalPrice(order.getTotalPrice());
 
         // save order
         return orderRepository.save(order);

@@ -29,6 +29,8 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     private List<Item> items = new ArrayList<>();
 
+    public double totalPrice;
+
     public Long getId() {
         return id;
     }
@@ -68,5 +70,19 @@ public class Order {
     public void setItems(List<Item> items) {
         this.items = items;
     }
+
+    public double getTotalPrice() {
+        double totalPrice = 0;
+        for (Item item : items) {
+            totalPrice += item.getPrice();
+        }
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+
 }
 
