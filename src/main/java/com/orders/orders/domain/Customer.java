@@ -19,6 +19,12 @@ public class Customer {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "type")
+    public Character type;
+
+    @Column(name = "state")
+    public Character state;
+
     // getters and setters
 
     public Long getId() {
@@ -51,6 +57,22 @@ public class Customer {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Character getType() {
+        return type;
+    }
+
+    public void setType(Character type) {
+        this.type = type;
+    }
+
+    public Character getState() {
+        return state;
+    }
+
+    public void setState(Character state) {
+        this.state = state;
     }
 
     @Override
