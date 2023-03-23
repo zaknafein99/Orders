@@ -5,9 +5,7 @@ import com.orders.orders.service.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/customers")
@@ -30,13 +28,18 @@ public class CustomerController {
     }
 
     @GetMapping("/phone/{phone}")
-    public ResponseEntity<Customer> getCustomerByPhone(@PathVariable String phone) {
-        Optional<Customer> optionalCustomer = customerService.getCustomerByPhone(phone);
-        if (optionalCustomer.isPresent()) {
-            Customer customer = optionalCustomer.get();
-            return ResponseEntity.ok(customer);
-        } else {
+    public ResponseEntity<List<Customer>> findByPhone(@PathVariable String phone) {
+        List<Customer> customers = customerService.getCustomerByPhone(phone);
+        if (customers == null) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(customers);
     }
+
+    @PostMapping("/save-all")
+    public ResponseEntity<List<Customer>> saveAll(@RequestBody List<Customer> customers) {
+        List<Customer> savedEntities = customerService.saveAll(customers);
+        return ResponseEntity.ok(savedEntities);
+    }
+
 }

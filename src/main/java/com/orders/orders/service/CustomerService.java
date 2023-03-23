@@ -5,7 +5,6 @@ import com.orders.orders.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -26,10 +25,13 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public Optional<Customer> getCustomerByPhone(String phone){
+    public List<Customer> getCustomerByPhone(String phone){
         return customerRepository.findByphoneNumber(phone);
     }
 
+    public List<Customer> saveAll(List<Customer> customers) {
+        return customerRepository.saveAll(customers);
+    }
     // other methods for handling customers
 }
 
