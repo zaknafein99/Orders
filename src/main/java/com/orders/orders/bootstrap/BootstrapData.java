@@ -11,10 +11,7 @@ import com.orders.orders.service.TruckService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class BootstrapData implements CommandLineRunner {
@@ -57,6 +54,8 @@ public class BootstrapData implements CommandLineRunner {
         customer.setName("John Doe");
         customer.setPhoneNumber("12345678");
         customer.setAddress("Main 123");
+        customer.setType('C');
+        customer.setState('A');
 
         // save the customer to the database
         customerService.createCustomer(customer);
