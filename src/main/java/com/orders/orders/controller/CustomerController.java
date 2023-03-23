@@ -21,8 +21,14 @@ public class CustomerController {
     }
 
     @GetMapping("")
-    public List<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
+    public ResponseEntity<List<Customer>> getAllCustomers() {
+        try {
+            List<Customer> customers = customerService.getAllCustomers();
+            return ResponseEntity.ok(customers);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed to retrieve all customers", e);
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("")
@@ -40,20 +46,20 @@ public class CustomerController {
     @GetMapping("/phone/{phone}")
     public ResponseEntity<List<Customer>> findByPhone(@PathVariable String phone) {
         List<Customer> customers = customerService.getCustomerByPhone(phone);
-        if (customers == null) {
+        if (customers.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(customerService.getCustomerByPhone(phone));
+        return ResponseEntity.ok(customers);
     }
 
     @PostMapping("/save-all")
     public ResponseEntity<List<Customer>> saveAll(@RequestBody List<Customer> customers) {
         if (customers.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(null);
         } else {
-            customerService.saveAll(customers);
-            return ResponseEntity.ok(customers);
+            List<Customer> savedCustomers = customerService.saveAll(customers);
+            log.info(String.format("Number of customers created: %d", savedCustomers.size()));
+            return ResponseEntity.ok(savedCustomers);
         }
     }
-
 }
