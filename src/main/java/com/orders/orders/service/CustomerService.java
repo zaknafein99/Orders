@@ -4,6 +4,8 @@ import com.orders.orders.domain.Customer;
 import com.orders.orders.domain.Order;
 import com.orders.orders.repository.CustomerRepository;
 import com.orders.orders.repository.OrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +28,8 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    public List<Customer> getAllCustomers(){
-        return customerRepository.findAll();
+    public Page<Customer> getAllCustomers(Pageable pageable){
+        return customerRepository.findAll(pageable);
     }
 
     public List<Customer> getCustomerByPhone(String phone){

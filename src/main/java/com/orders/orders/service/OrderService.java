@@ -7,6 +7,8 @@ import com.orders.orders.domain.Truck;
 import com.orders.orders.repository.ItemRepository;
 import com.orders.orders.repository.OrderRepository;
 import com.orders.orders.repository.TruckRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,8 +46,8 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public List<Order> getAllOrders(){
-        return orderRepository.findAll();
+    public Page<Order> getAllOrders(Pageable pageable){
+        return orderRepository.findAll(pageable);
     }
 
     private Truck findAvailableTruck(Double price) {
