@@ -2,6 +2,7 @@ package com.orders.orders.controller;
 
 import com.orders.orders.domain.Customer;
 import com.orders.orders.service.CustomerService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +61,16 @@ public class CustomerController {
             List<Customer> savedCustomers = customerService.saveAll(customers);
             log.info(String.format("Number of customers created: %d", savedCustomers.size()));
             return ResponseEntity.ok(savedCustomers);
+        }
+    }
+
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long customerId) {
+        try {
+            customerService.deleteCustomer(customerId);
+            return ResponseEntity.noContent().build();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }
