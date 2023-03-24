@@ -3,10 +3,8 @@ package com.orders.orders.service;
 import com.orders.orders.domain.Customer;
 import com.orders.orders.domain.Item;
 import com.orders.orders.domain.Order;
-import com.orders.orders.domain.Truck;
 import com.orders.orders.repository.ItemRepository;
 import com.orders.orders.repository.OrderRepository;
-import com.orders.orders.repository.TruckRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,13 +16,11 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final TruckRepository truckRepository;
     private final CustomerService customerService;
     private final ItemRepository itemRepository;
 
-    public OrderService(OrderRepository orderRepository, TruckRepository truckRepository, CustomerService customerService, ItemRepository itemRepository) {
+    public OrderService(OrderRepository orderRepository, CustomerService customerService, ItemRepository itemRepository) {
         this.orderRepository = orderRepository;
-        this.truckRepository = truckRepository;
         this.customerService = customerService;
         this.itemRepository = itemRepository;
     }
@@ -49,13 +45,6 @@ public class OrderService {
     public Page<Order> getAllOrders(Pageable pageable){
         return orderRepository.findAll(pageable);
     }
-
-    private Truck findAvailableTruck(Double price) {
-        // logic for finding available truck
-        return null;
-    }
-
-
 
     // other methods for handling orders
 }
