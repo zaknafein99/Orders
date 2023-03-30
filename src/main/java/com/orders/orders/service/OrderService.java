@@ -1,5 +1,6 @@
 package com.orders.orders.service;
 
+import com.orders.orders.controller.CustomerController;
 import com.orders.orders.domain.Customer;
 import com.orders.orders.domain.Item;
 import com.orders.orders.domain.Order;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class OrderService {
@@ -19,6 +21,9 @@ public class OrderService {
     private final CustomerService customerService;
     private final ItemRepository itemRepository;
 
+    private static final Logger log = Logger.getLogger(CustomerController.class.getName());
+
+
     public OrderService(OrderRepository orderRepository, CustomerService customerService, ItemRepository itemRepository) {
         this.orderRepository = orderRepository;
         this.customerService = customerService;
@@ -26,14 +31,23 @@ public class OrderService {
     }
 
     public Order createOrder(Order order) {
-        Customer customer = customerService.getCustomerById(order.getCustomer().getId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-        order.setCustomer(customer);
+        try {
+            Customer customer = customerService.getCustomerById(order.getCustomer().getId())
+                    .orElseThrow(() -> new RuntimeException("Customer not found"));
+            order.setCustomer(customer);
+        } catch (RuntimeException e) {
+            // handle exception here
+            log.info("Customer with id " + order.getCustomer().getId() + " not found.");
+        }
 
         List<Item> items = new ArrayList<>();
-        for (Item item : order.getItems()) {
-            Item itemFromDb = itemRepository.findById(item.getId()).orElseThrow(() -> new RuntimeException("Item not found"));
-            items.add(itemFromDb);
+        try {
+            for (Item item : order.getItems()) {
+                Item itemFromDb = itemRepository.findById(item.getId()).orElseThrow(() -> new RuntimeException("Item not found"));
+                items.add(itemFromDb);
+            }
+        } catch (RuntimeException e) {
+            log.info("Item with id " + order.getCustomer().getId() + " not found.");
         }
         order.setItems(items);
         order.setTotalPrice(order.getTotalPrice());
