@@ -3,6 +3,8 @@ package com.orders.orders.controller;
 import com.orders.orders.domain.Customer;
 import com.orders.orders.service.CustomerService;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +24,9 @@ public class CustomerController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Customer>> getAllCustomers() {
+    public ResponseEntity<Page<Customer>> getAllCustomers(Pageable pageable) {
         try {
-            List<Customer> customers = customerService.getAllCustomers();
+            Page<Customer> customers = customerService.getAllCustomers(pageable);
             return ResponseEntity.ok(customers);
         } catch (Exception e) {
             log.log(Level.SEVERE, "Failed to retrieve all customers", e);
